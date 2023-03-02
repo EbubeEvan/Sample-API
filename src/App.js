@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import ResourceBar from "./ResourceBar";
+import Table from "./Table";
+import { useEffect, useState } from "react";
+
 
 function App() {
+
+  const [resource, setResource] = useState('users')
+  const [items, setItems] = useState([])
+
+  const url = `https://jsonplaceholder.typicode.com/${resource}`
+  console.log(url);
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      const response = await fetch(url)
+      const data = await response.json()
+      console.log(data);
+      setItems(data)
+    }
+
+    fetchResources()
+  }, [resource] )
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ResourceBar
+       setResource = {setResource}
+      />
+      <Table
+        items={items}
+      />
     </div>
   );
 }
